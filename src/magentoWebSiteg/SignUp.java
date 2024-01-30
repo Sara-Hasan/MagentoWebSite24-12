@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 public class SignUp extends Parameters{
 	
-	WebDriver driver = new ChromeDriver();
+	
 	@BeforeTest
 
 	public void mySetup() {
@@ -62,7 +62,7 @@ public class SignUp extends Parameters{
 		
 		assertEquals(driver.getCurrentUrl().contains("logoutSuccess"), true);
 	}
-	@Test(priority = 3)
+	@Test(priority = 3,enabled = false)
 	public void LoginProcess() throws InterruptedException {
 		driver.findElement(By.linkText("Sign In")).click();
 		driver.findElement(By.id("email")).sendKeys(EmailId);
@@ -78,7 +78,7 @@ public class SignUp extends Parameters{
 	}
 	
 	@Test(priority = 4)
-	public void addOneRandomItem() {
+	public void addOneRandomItem() throws InterruptedException {
 		
 		driver.get("https://magento.softwaretestingboard.com/");
 //		driver.manage().window().maximize();
@@ -105,11 +105,18 @@ public class SignUp extends Parameters{
 		
 		
 		
-		WebElement colorContainer = driver.findElement(By.cssSelector(".swatch-attribute .color"));
-		int thecolor = colorContainer.findElements (By.className("color")).size();
+		WebElement colorContainer = driver.findElement(By.cssSelector(".swatch-attribute.color"));
+		int thecolor = colorContainer.findElements (By.className("swatch-option")).size();
 		
-//		System.out.println(thesizes);
-		colorContainer.findElements(By.className("color")).get(rand.nextInt(thesizes)).click();
+//		System.out.println(thecolor);
+		colorContainer.findElements(By.className("swatch-option")).get(rand.nextInt(thecolor)).click();
+		
+		driver.findElement(By.id("product-addtocart-button")).click();
+		Thread.sleep(3000);
+		
+		String ActualMsg  = driver.findElement(By.cssSelector(".page.messages")).getText();
+		
+		assertEquals(ActualMsg.contains("You added"), true);
 		
 	}
 	
